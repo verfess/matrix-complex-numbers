@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class ComplexMatrix {
     private int rows;
     private int columns;
@@ -152,5 +154,69 @@ public class ComplexMatrix {
         }
 
         return result;
+    }
+
+    public static ComplexMatrix readMatrix(Scanner sc, String order_text) {
+        System.out.println("Введите для матрицы " + order_text);
+        int rows;
+        while(true) {
+            System.out.print("Кол-во строк: ");
+            try {
+                rows = Integer.parseInt(sc.nextLine().trim());
+                if(rows<=0) throw new NumberFormatException();
+                break;
+
+            } catch (NumberFormatException e) {
+                System.out.println("Нужно целое положительное число.");
+            }
+        }
+        int columns;
+        while(true) {
+            System.out.print("Кол-во столбцов: ");
+            try {
+                columns = Integer.parseInt(sc.nextLine().trim());
+                if(columns<=0) throw new NumberFormatException();
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Нужно целое положительное число.");
+            }
+        }
+        ComplexMatrix result = new ComplexMatrix(rows, columns);
+        System.out.println("Введите действительную и мнимую часть через пробел.");
+        for(int row = 0; row < rows; row++) {
+            for(int column = 0; column < columns; column++) {
+                while(true) {
+                System.out.print("[" + row + "][" + column  + "]= ");
+                String[] split_numbers = sc.nextLine().trim().split(" ");
+                if (split_numbers.length != 2) {
+                    System.out.println("Нужны два числа через пробел (действительная и мнимая часть).");
+                    continue;
+                }
+                try {
+                    double real = Double.parseDouble(split_numbers[0]);
+                    double imaginary = Double.parseDouble(split_numbers[1]);
+                    result.set(row, column, new ComplexNumber(real, imaginary));
+                    break;
+                } catch (NumberFormatException e) {
+                    System.out.println("Нужны два числа через пробел (действительная и мнимая часть).");
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+    
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                if (column > 0) {result.append("\t");}
+                result.append(cells[row][column]);
+            }
+            result.append(System.lineSeparator());
+        }
+        return result.toString();
     }
 }

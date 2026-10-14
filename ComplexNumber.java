@@ -38,4 +38,11 @@ public class ComplexNumber {
     public static boolean isZero(ComplexNumber x) {
         return x.real == 0 && x.imaginary == 0;
     }
+
+    @Override
+    public String toString() {
+        if (real == 0) {return String.format("%.2fi", imaginary);}
+        if (imaginary == 0) {return String.format("%.2f", real);}
+        return String.format("%.2f%s%.2fi", real, (imaginary < 0 ? " - " : " + "), Math.abs(imaginary));
+    }
 }
